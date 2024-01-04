@@ -1,0 +1,8 @@
+git init
+git brach -M master
+git add -A .
+git commit -m "first commit"
+git remote add github https://github.com/niaobulashi/codedesign.git
+git push -u github master
+git remote add gitee https://gitee.com/niaobulashi/codedesign.git
+git push -u gitee master
