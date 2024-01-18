@@ -20,6 +20,7 @@
         <fastjson.version>1.2.83</fastjson.version>
         <commons.io.version>2.13.0</commons.io.version>
         <poi.version>4.1.2</poi.version>
+        <dubbo.version>2.7.22</dubbo.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -39,7 +40,6 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.version}</version>
             </dependency>
 
             <!-- io常用工具类 -->
@@ -63,6 +63,11 @@
                 <version>${fastjson.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+            </dependency>
+
             <!-- 并发模块-->
             <dependency>
                 <groupId>com.hulang</groupId>
@@ -77,12 +82,21 @@
                 <version>${hulang.version}</version>
             </dependency>
 
+            <!-- 数据库模块-->
+            <dependency>
+                <groupId>com.hulang</groupId>
+                <artifactId>codedesign-database</artifactId>
+                <version>${hulang.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 
     <modules>
         <module>codedesign-concurrency</module>
         <module>codedesign-common</module>
+        <module>codedesign-database</module>
     </modules>
     <packaging>pom</packaging>
 
