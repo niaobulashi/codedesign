@@ -22,6 +22,7 @@ public class ThreadPoolExample {
         }
         // 关闭线程池
         executor.shutdown();
+        executor.shutdownNow();
         // 等待所有任务完成
         while (!executor.isTerminated()) {
             // 空循环，等待所有任务完成
