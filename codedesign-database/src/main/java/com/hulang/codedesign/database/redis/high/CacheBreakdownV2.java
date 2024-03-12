@@ -1,5 +1,7 @@
 package com.hulang.codedesign.database.redis.high;
 
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
@@ -17,13 +19,23 @@ public class CacheBreakdownV2 {
 
     private RedisTemplate redisTemplate;
 
+    private RedissonClient redissonClient;
+
+
     /**
      * 查询商品分类信息
      * @param id
      * @return
      */
     public List<ProductCategory> findByDeliveryOrderId(Long id) {
+
         String key = "product:product-categroy";
+        // 布隆过滤器
+        RBloomFilter<Long> bloomFilter = redissonClient.getBloomFilter("key");
+        if (!bloomFilter.contains(id)) {
+            throw new RuntimeException("商品分类信息不存在");
+        }
+
         // 从Redis查询查询商品分类信息
         Object obj = redisTemplate.opsForValue().get(key);
         List<ProductCategory> productCategoryList = null;
@@ -35,7 +47,9 @@ public class CacheBreakdownV2 {
                     return (List<ProductCategory>) obj;
                 }
                 productCategoryList = selectByDeliveryOrderId(id);
-                redisTemplate.opsForValue().set(key, productCategoryList, Duration.ofHours(2L));
+                // 避免缓存雪崩，设置随机失效时间
+                Duration expire = Duration.ofHours(2L).plus(Duration.ofSeconds((int) (Math.random() * 100)));
+                redisTemplate.opsForValue().set(key, productCategoryList, expire);
             }
             return productCategoryList;
         }
