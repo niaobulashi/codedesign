@@ -30,6 +30,7 @@ public class ThreadPoolDemo {
 
         for (int i = 1; i <= 100; i++) {
             threadPoolExecutor.execute(new MyTask(i));
+            threadPoolExecutor.submit(new MyTask(i));
 
         }
     }
